@@ -1,97 +1,153 @@
 import sys
 import time
-import configparser
-from configparser import NoOptionError, NoSectionError
-print("The Ragnarok TBB Character Creator")
-time.sleep(1)
-print("Loading Complete")
-print("Enter The Ragnarok?")
-print("N/Y")
-var0 = input("")
-if var0 == "N":
+import os
+
+def Launch():
+    while True:
+        try:
+            os.system('cls||clear')
+            print('Normal boot [1]')
+            print('Other [2] (WIP)')
+            print('Quit [3]')
+            een = int(input(''))
+            if een == 1:
+                print('')
+                preLoad()
+            if een == 2:
+                pass
+            if een == 3:
+                sys.exit()
+        except ValueError:
+            Launch()
+
+def preLoad():
+    while True:
+        try:
+            save = open('data.txt', 'r')
+            save.close()
+            print("The Ragnarok TBBS")
+            cc()
+        except (IndexError, FileNotFoundError):
+            save = open("data.txt", "w+")
+            save.write('0\n0\n0\n0\n0\n0')
+            save.close()
+            preLoad()
+
+def pronounFetch():
+    vars = saveRead()
+    gender = vars[1]
+    if gender == 1:
+        pronoun = ('he', 'him', 'his')
+    if gender == 2:
+        pronoun = ('she', 'her', 'her')
+    return pronoun
+
+def raceFetch():
+    save = saveRead()
+    race = int(save[2])
+    if race == 0:
+        race_str = "Human"
+    if race == 1:
+        race_str = "Beast"
+    if race == 2:
+        race_str = "Goblin"
+    if race == 3:
+        race_str = "Kobold"
+    if race == 4:
+        race_str = "Ork"
+    return race_str
+
+##Variable Writer
+def Writer(linen, varn):
+    save = open("data.txt", "r")
+    line = save.readlines()
+    line[linen] = varn
+    save = open("data.txt", "w+")
+    save.writelines(line)
+    save.close()
+    return
+
+def saveRead():
+    save = open('data.txt', 'r')
+    lines = save.readlines()
+    name = lines[0]
+    gender = int(lines[1])
+    race = lines[2]
+    save.close()
+    return name, gender, race
+
+##Character Creator
+def cc():
+    print("It is time to create your character")
+    print("What is your name, Hero?")
+    name_str = input("")
+    name = name_str + '\n'
+    varn = name
+    linen = 0
+    Writer(linen, varn)
+    os.system('cls||clear')
+    print(name_str, 'is the name of the Hero. You may save or destroy the land of Ragnarok as you choose.')
+    time.sleep(2)
+    os.system('cls||clear')
+    print("Choose your gender")
+    print("1:Male")
+    print("2:Female")
+    gender = int(input(""))
+    if gender == 1:
+        varn = '1\n'
+    if gender == 2:
+        varn = '2\n'
+    linen = 1
+    Writer(linen, varn)
+    os.system('cls||clear')
+    print("Choose your race.")
+    print("1:Human")
+    print("2:Beast Person")
+    print("3:Goblin")
+    print("4:Kobold")
+    print("5:Ork")
+    racer = int(input(""))
+    race = 0
+    if racer == 1:
+        race = '0\n'
+    if racer == 2:
+        br()
+    if racer == 3:
+        race = '2\n'
+    if racer == 4:
+        race = '3\n'
+    if racer == 5:
+        race = '4\n'
+    os.system('cls||clear')
+    linen = 2
+    varn = race
+    Writer(linen, str(varn))
+    race_str = raceFetch()
+    print("So it is, that", name_str, "is a", race_str, end="")
+    print('.')
+    time.sleep(2)
+    os.system('cls||clear')
     sys.exit()
-if var0 == "Y":
-    print("Welcome to The Ragnarok")
-    print("Pick your worthless class")
-    print("5:fighter")
-    print("4:boxer")
-    print("1:CatGirl")
-    print("2:mage just in case you are a really shitty person you fucking degenerate")
-    print("3:ranger")
-    print("6:CatGirl but autistic")
-    print("7:CatBoy")
-    print("8:CatBoy but autistic")
-    print("")
-    strength = 0
-    mag = 0
-    char = 0
-    agi = 0
-varclass = int(input(""))
-if varclass == 5:
-    strength = 10
-    mag = 3
-    char = 3
-    agi = 1
-    print("You are a Fighter")
-if varclass == 4:
-    strength = 13
-    mag = 0
-    char = 2
-    agi = 5
-    print("you are a Boxer")
-if varclass == 1:
-    strength = 3
-    mag = 3
-    char = 10
-    agi = 14
-    print("you are a CatGirl")
-if varclass == 2:
-    strength = 0
-    mag = 15
-    char = 0
-    agi = 0
-    print("Whats wrong with you???")
-if varclass == 3:
-    strength = 4
-    mag = 6
-    char = 5
-    agi = 12
-    print("You are a Ranger! I love you.")
-    print("Sowwy UwU")
-if varclass == 6:
-    strength = 7
-    mag = 14
-    char = 0
-    agi = 14
-    print("You are indeed, an autistic CatGirl.")
-if varclass == 8:
-    strength = 9
-    mag = 14
-    char = 0
-    agi = 12
-    print("You are indeed, an autistic CatBoy.")
-if varclass == 7:
-    strength = 5
-    mag = 3
-    char = 10
-    agi = 12
-    print("you are a CatBoy")
-print("Your Strength is", strength)
-print("Your Magical ability is", mag)
-print("Your Charisma is", char)
-print ("your agility is ", agi)
-name = "no name"
-if varclass == 2:
-    print("What is your name")
-    name = input()
-if varclass != 2:
-    print("what is your name hero?")
-    name = input()
-print("writing your data to a file!")
-cb = open("playerdat.txt","w+")
-cb.write(name/n)
-cb.write("strength")
-cb.write("mag")
-cb.write("char")
-cb.write("agi")
-cb.close()
+
+##The beast Race Race Chooser
+def br():
+    pronoun = pronounFetch()
+    print('As the Hero is a beast person,', pronoun[0], "will need to know what kind of Beast", pronoun[0], "is.")
+    print('\nOPTION [1]')
+    print('OPTION [2]')
+    print('OPTION [3]')
+    print('OPTION [4]')
+    print('QUIT [5]')
+    br_inp = int(input('')) ##TODO WORK HERE
+    if br_inp == 1:
+        pass
+    if br_inp == 2:
+        pass
+    if br_inp == 3:
+        pass
+    if br_inp == 4:
+        pass
+    if br_inp == 5:
+        sys.exit()
+
+Launch()
