@@ -2,20 +2,51 @@ import sys
 import time
 import os
 
+def varDisplay():
+    while True:
+        try:
+            os.system('cls||clear')
+            print('\nThe Ragnarok TBBS\n')
+            p = pronounFetch()
+            r = raceFetch()
+            vars = saveRead()
+            n_pst = vars[0]
+            n = n_pst.strip('\n')
+            ge = vars[1]
+            if ge == 1:
+                g = 'Male'
+            if ge == 2:
+                g = 'Female'
+            print('NAME:', n)
+            print('RACE:', r)
+            print('GENDER:', g)
+            print('')
+            return
+        except UnboundLocalError:
+            unboundHandler()
+            sys.exit()
+
 def Launch():
     while True:
         try:
             os.system('cls||clear')
+            print('')
             print('Normal boot [1]')
-            print('Other [2] (WIP)')
-            print('Quit [3]')
+            print('Display vars [2]')
+            print('Other (WIP) [3]')
+            print('Quit [4]')
             een = int(input(''))
             if een == 1:
                 print('')
                 preLoad()
+                cc()
             if een == 2:
-                pass
+                varDisplay()
+                time.sleep(4)
+                Launch()
             if een == 3:
+                pass
+            if een == 4:
                 sys.exit()
         except ValueError:
             Launch()
@@ -26,21 +57,36 @@ def preLoad():
             save = open('data.txt', 'r')
             save.close()
             print("The Ragnarok TBBS")
-            cc()
+            return
         except (IndexError, FileNotFoundError):
-            save = open("data.txt", "w+")
-            save.write('0\n0\n0\n0\n0\n0')
-            save.close()
+            saveGenerator()
             preLoad()
 
+def saveGenerator():
+    save = open("data.txt", "w+")
+    save.write('0\n0\n0\n0\n0\n0')
+    save.close()
+    return
+
 def pronounFetch():
-    vars = saveRead()
-    gender = vars[1]
-    if gender == 1:
-        pronoun = ('he', 'him', 'his')
-    if gender == 2:
-        pronoun = ('she', 'her', 'her')
-    return pronoun
+    while True:
+        try:
+            vars = saveRead()
+            gender = vars[1]
+            if gender == 1:
+                pronoun = ('he', 'him', 'his', 'He', 'Him', 'His')
+            if gender == 2:
+                pronoun = ('she', 'her', 'hers', 'She', 'Her', 'Hers')
+            return pronoun
+        except UnboundLocalError:
+            print('')
+            unboundHandler()
+            sys.exit()
+
+def unboundHandler():
+    print("You probably haven't set up your character. Do that first!")
+    time.sleep(3)
+    return
 
 def raceFetch():
     save = saveRead()
@@ -68,13 +114,22 @@ def Writer(linen, varn):
     return
 
 def saveRead():
-    save = open('data.txt', 'r')
-    lines = save.readlines()
-    name = lines[0]
-    gender = int(lines[1])
-    race = lines[2]
-    save.close()
-    return name, gender, race
+    while True:
+        try:
+            save = open('data.txt', 'r')
+            lines = save.readlines()
+            name = lines[0]
+            gender = int(lines[1])
+            race = lines[2]
+            save.close()
+            return name, gender, race
+        except FileNotFoundError:
+            saveGenerator()
+            saveRead()
+        except UnboundLocalError:
+            unboundHandler()
+            sys.exit()
+
 
 ##Character Creator
 def cc():
@@ -127,7 +182,7 @@ def cc():
     print('.')
     time.sleep(2)
     os.system('cls||clear')
-    sys.exit()
+    return
 
 ##The beast Race Race Chooser
 def br():
